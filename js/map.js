@@ -17,8 +17,8 @@ var getData = function(map) {
         url: 'data/response.json',
         type: "get",
         success: function(dat) {
-        	data = dat
-            // Do something with your data!
+            data = dat
+                // Do something with your data!
         },
         dataType: "json"
     });
@@ -38,18 +38,18 @@ var customBuild = function(map, data) {
     var islander = new L.LayerGroup();
 
     var islanderKilled = 0,
-    	islanderHit = 0,
-    	indianKilled = 0,
-    	indianHit = 0,
-    	asianKilled = 0,
-    	asianHit = 0,
-    	blackKilled = 0,
-    	blackHit = 0,
-    	whiteKilled = 0,
-    	whiteHit = 0,
-    	unknownKilled = 0,
-    	unknownHit = 0;
-    	
+        islanderHit = 0,
+        indianKilled = 0,
+        indianHit = 0,
+        asianKilled = 0,
+        asianHit = 0,
+        blackKilled = 0,
+        blackHit = 0,
+        whiteKilled = 0,
+        whiteHit = 0,
+        unknownKilled = 0,
+        unknownHit = 0;
+
     for (var i = data.length - 1; i >= 0; i--) {
 
         var circle = new L.circleMarker(data[i].lat, data[i].lng, fillColor(data[i]['Hit or Killed?'] == 'Killed') ? 'red' : 'black').bindPopup("Victim Name:" + data[i]['Victim Name'] +
@@ -57,19 +57,46 @@ var customBuild = function(map, data) {
 
         if (data[i] == 'Native Hawaiian or Other Pacific Islander') {
             circle.addTo(islander);
-            	if (data[i]['Hit or Killed'] == 'Killed') {
-
-            	};
+            if (data[i]['Hit or Killed'] == 'Killed') {
+                islanderKilled++;
+            } else {
+                islanderHit++;
+            }
         } else if (data[i] == 'White') {
             circle.addTo(white);
+            if (data[i]['Hit or Killed'] == 'Killed') {
+                whiteKilled++;
+            } else {
+                whiteHit++;
+            }
         } else if (data[i] == 'Black or African American') {
             circle.addTo(black);
+            if (data[i]['Hit or Killed'] == 'Killed') {
+                blackKilled++;
+            } else {
+                blackHit++;
+            }
         } else if (data[i] == 'Asian') {
             circle.addTo(asian);
+            if (data[i]['Hit or Killed'] == 'Killed') {
+                asianKilled++;
+            } else {
+                asianHit++;
+            }
         } else if (data[i] == 'American Indian or Alaska Native') {
             circle.addTo(indian);
+            if (data[i]['Hit or Killed'] == 'Killed') {
+                indianKilled++;
+            } else {
+                indianHit++;
+            }
         } else { //if (data[i] == 'Unknown') {
             circle.addTo(unknown);
+            if (data[i]['Hit or Killed'] == 'Killed') {
+                unknownKilled++;
+            } else {
+                unknownHit++;
+            }
         }
     }
     // Be sure to add each layer to the map
@@ -81,13 +108,18 @@ var customBuild = function(map, data) {
     islander.addTo(map);
 
     var mapLayers = {
-        "Unknown": unknown,
-        "White": white,
-        "Black or African American": black,
-        "Asian": asian,
-        "American Indian or Alaska Native": indian,
-        "Native Hawaiian or Other Pacific Islander": islander
-    }
-    // Once layers are on the map, add a leaflet controller that shows/hides layers
-    //	L.control.layers(null,mapLayers).addTo(map);
+            "Unknown": unknown,
+            "White": white,
+            "Black or African American": black,
+            "Asian": asian,
+            "American Indian or Alaska Native": indian,
+            "Native Hawaiian or Other Pacific Islander": islander
+        }
+        // Once layers are on the map, add a leaflet controller that shows/hides layers
+        //	L.control.layers(null,mapLayers).addTo(map);
+    //table
+    $("#blackHit").text(blackHit);
+    $("#blackKilled").text(blackKilled);
+    $("#whiteHit").text(whiteHit);
+    $("#whiteKilled").text(whiteKilled);
 };
