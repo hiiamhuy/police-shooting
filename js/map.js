@@ -23,7 +23,6 @@ var getData = function(map) {
         dataType: "json"
     });
     // When your request is successful, call your customBuild function
-    customBuild(map, data);
 };
 
 // Loop through your data and add the appropriate layers and points
@@ -37,53 +36,53 @@ var customBuild = function(map, data) {
     var indian = new L.LayerGroup();
     var islander = new L.LayerGroup();
 
-    var islanderKilled = 0,
-        islanderHit = 0,
-        indianKilled = 0,
-        indianHit = 0,
-        asianKilled = 0,
-        asianHit = 0,
-        blackKilled = 0,
-        blackHit = 0,
-        whiteKilled = 0,
-        whiteHit = 0,
-        unknownKilled = 0,
-        unknownHit = 0;
+    var islanderKilled = 0;
+      var   islanderHit = 0;
+      var   indianKilled = 0;
+      var   indianHit = 0;
+        var asianKilled = 0;
+        var asianHit = 0;
+       var  blackKilled = 0;
+        var blackHit = 0;
+        var whiteKilled = 0;
+        var whiteHit = 0;
+        var unknownKilled = 0;
+        var unknownHit = 0;
 
     for (var i = data.length - 1; i >= 0; i--) {
 
         var circle = new L.circleMarker(data[i].lat, data[i].lng, fillColor(data[i]['Hit or Killed?'] == 'Killed') ? 'red' : 'black').bindPopup("Victim Name:" + data[i]['Victim Name'] +
             ' was ' + data[i]['Hit or Killed'] + ' in ' + data[i].State + ' by ' + data[i]['Agency Name'] + "<br/><br/>" + data[i].Summary);
 
-        if (data[i] == 'Native Hawaiian or Other Pacific Islander') {
+        if (data[i].race == 'Native Hawaiian or Other Pacific Islander') {
             circle.addTo(islander);
             if (data[i]['Hit or Killed'] == 'Killed') {
                 islanderKilled++;
             } else {
                 islanderHit++;
             }
-        } else if (data[i] == 'White') {
+        } else if (data[i].race == 'White') {
             circle.addTo(white);
             if (data[i]['Hit or Killed'] == 'Killed') {
                 whiteKilled++;
             } else {
                 whiteHit++;
             }
-        } else if (data[i] == 'Black or African American') {
+        } else if (data[i].race == 'Black or African American') {
             circle.addTo(black);
             if (data[i]['Hit or Killed'] == 'Killed') {
                 blackKilled++;
             } else {
                 blackHit++;
             }
-        } else if (data[i] == 'Asian') {
+        } else if (data[i].race == 'Asian') {
             circle.addTo(asian);
             if (data[i]['Hit or Killed'] == 'Killed') {
                 asianKilled++;
             } else {
                 asianHit++;
             }
-        } else if (data[i] == 'American Indian or Alaska Native') {
+        } else if (data[i].race == 'American Indian or Alaska Native') {
             circle.addTo(indian);
             if (data[i]['Hit or Killed'] == 'Killed') {
                 indianKilled++;
