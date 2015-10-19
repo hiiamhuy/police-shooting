@@ -6,3 +6,17 @@
 #mapDiv {
 	height: 600px;
 }
+
+#head {
+	font-size: 50px;
+	text-align: center;
+}
+
+th, td {
+
+	text-align: center;
+}
+
+table.table-striped {
+	
+}
