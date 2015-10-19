@@ -2,3 +2,7 @@
 #container {
 	height:800px;
 }
+
+#mapDiv {
+	height: 600px;
+}

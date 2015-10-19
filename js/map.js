@@ -19,6 +19,7 @@ var getData = function(map) {
         success: function(dat) {
             data = dat
                 // Do something with your data!
+            customBuild(map, data)
         },
         dataType: "json"
     });
@@ -37,61 +38,63 @@ var customBuild = function(map, data) {
     var islander = new L.LayerGroup();
 
     var islanderKilled = 0;
-      var   islanderHit = 0;
-      var   indianKilled = 0;
-      var   indianHit = 0;
-        var asianKilled = 0;
-        var asianHit = 0;
-       var  blackKilled = 0;
-        var blackHit = 0;
-        var whiteKilled = 0;
-        var whiteHit = 0;
-        var unknownKilled = 0;
-        var unknownHit = 0;
+    var islanderHit = 0;
+    var indianKilled = 0;
+    var indianHit = 0;
+    var asianKilled = 0;
+    var asianHit = 0;
+    var blackKilled = 0;
+    var blackHit = 0;
+    var whiteKilled = 0;
+    var whiteHit = 0;
+    var unknownKilled = 0;
+    var unknownHit = 0;
 
     for (var i = data.length - 1; i >= 0; i--) {
-
-        var circle = new L.circleMarker(data[i].lat, data[i].lng, fillColor(data[i]['Hit or Killed?'] == 'Killed') ? 'red' : 'black').bindPopup("Victim Name:" + data[i]['Victim Name'] +
-            ' was ' + data[i]['Hit or Killed'] + ' in ' + data[i].State + ' by ' + data[i]['Agency Name'] + "<br/><br/>" + data[i].Summary);
-
-        if (data[i].race == 'Native Hawaiian or Other Pacific Islander') {
+        //draw points and fill data bubble
+        var circle = new L.circleMarker([data[i].lat, data[i].lng], {
+            fillColor: (data[i]['Hit or Killed?'] == 'Killed') ? 'red' : 'black'
+        }).bindPopup("Victim Name: " + data[i]['Victim Name'] +
+            ' was ' + data[i]['Hit or Killed?'] + ' in ' + data[i].State + ' by ' + data[i]['Agency Name'] + "<br/><br/>" + data[i].Summary);
+        //adding up killed and hits/unknown as well as filling up layers
+        if (data[i]['Race'] == 'Native Hawaiian or Other Pacific Islander') {
             circle.addTo(islander);
-            if (data[i]['Hit or Killed'] == 'Killed') {
+            if (data[i]['Hit or Killed?'] == 'Killed') {
                 islanderKilled++;
             } else {
                 islanderHit++;
             }
-        } else if (data[i].race == 'White') {
+        } else if (data[i]['Race'] == 'White') {
             circle.addTo(white);
-            if (data[i]['Hit or Killed'] == 'Killed') {
+            if (data[i]['Hit or Killed?'] == 'Killed') {
                 whiteKilled++;
             } else {
                 whiteHit++;
             }
-        } else if (data[i].race == 'Black or African American') {
+        } else if (data[i]['Race'] == 'Black or African American') {
             circle.addTo(black);
-            if (data[i]['Hit or Killed'] == 'Killed') {
+            if (data[i]['Hit or Killed?'] == 'Killed') {
                 blackKilled++;
             } else {
                 blackHit++;
             }
-        } else if (data[i].race == 'Asian') {
+        } else if (data[i]['Race'] == 'Asian') {
             circle.addTo(asian);
-            if (data[i]['Hit or Killed'] == 'Killed') {
+            if (data[i]['Hit or Killed?'] == 'Killed') {
                 asianKilled++;
             } else {
                 asianHit++;
             }
-        } else if (data[i].race == 'American Indian or Alaska Native') {
+        } else if (data[i]['Race'] == 'American Indian or Alaska Native') {
             circle.addTo(indian);
-            if (data[i]['Hit or Killed'] == 'Killed') {
+            if (data[i]['Hit or Killed?'] == 'Killed') {
                 indianKilled++;
             } else {
                 indianHit++;
             }
-        } else { //if (data[i] == 'Unknown') {
+        } else if (data[i]['Race'] == 'Unknown') {
             circle.addTo(unknown);
-            if (data[i]['Hit or Killed'] == 'Killed') {
+            if (data[i]['Hit or Killed?'] == 'Killed') {
                 unknownKilled++;
             } else {
                 unknownHit++;
@@ -99,13 +102,12 @@ var customBuild = function(map, data) {
         }
     }
     // Be sure to add each layer to the map
-    unknown.addTo(map);
-    white.addTo(map);
-    black.addTo(map);
-    asian.addTo(map);
-    indian.addTo(map);
-    islander.addTo(map);
-
+    // unknown.addTo(map);
+    //  white.addTo(map);
+    //  black.addTo(map);
+    // asian.addTo(map);
+    // indian.addTo(map);
+    // islander.addTo(map);
     var mapLayers = {
             "Unknown": unknown,
             "White": white,
@@ -115,7 +117,7 @@ var customBuild = function(map, data) {
             "Native Hawaiian or Other Pacific Islander": islander
         }
         // Once layers are on the map, add a leaflet controller that shows/hides layers
-        //	L.control.layers(null,mapLayers).addTo(map);
+    L.control.layers(null, mapLayers).addTo(map);
     //table
     $("#blackHit").text(blackHit);
     $("#blackKilled").text(blackKilled);
